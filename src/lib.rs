@@ -5,6 +5,6 @@ use crate::freezable::freezable_impl;
 mod freezable;
 
 #[proc_macro_attribute]
-pub fn freezable(args: TokenStream, input: TokenStream) -> TokenStream {
+pub fn freezable_builder(args: TokenStream, input: TokenStream) -> TokenStream {
     freezable_impl(args, input)
 }
