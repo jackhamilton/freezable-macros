@@ -1,6 +1,6 @@
 [package]
 name = "freezable-macros"
-version = "0.3.2"
+version = "0.4.0"
 edition = "2024"
 license = "Unlicense"
 authors = ["Jack Hamilton jackham800@gmail.com"]
@@ -13,6 +13,6 @@ description = "Support proc macro for the freezable package"
 proc-macro = true
 
 [dependencies]
-proc-macro2 = "1.0.101"
-quote = "1.0.40"
-syn = "2.0.106"
+proc-macro2 = "1.0.107"
+quote = "1.0.47"
+syn = "3.0.10"
