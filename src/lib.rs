@@ -1,6 +1,6 @@
 extern crate proc_macro;
-use proc_macro::TokenStream;
 use crate::freezable::freezable_impl;
+use proc_macro::TokenStream;
 
 mod freezable;
 
