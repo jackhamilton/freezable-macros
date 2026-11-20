@@ -16,16 +16,34 @@ struct FreezableField {
 
 impl Parse for FreezableField {
     fn parse(input: ParseStream<'_>) -> syn::Result<Self> {
-        let attrs = Attribute::parse_outer(input)?;
+        let mut attrs = Attribute::parse_outer(input)?;
+        let default_attrs: Vec<_> = attrs
+            .iter()
+            .filter(|attr| attr.path().is_ident("default"))
+            .collect();
+        if default_attrs.len() > 1 {
+            return Err(syn::Error::new_spanned(
+                default_attrs[1],
+                "a field can only have one `default` attribute",
+            ));
+        }
+        let default = default_attrs
+            .first()
+            .map(|attr| attr.parse_args::<Expr>())
+            .transpose()?;
+        attrs.retain(|attr| !attr.path().is_ident("default"));
         let vis = input.parse()?;
         let ident = input.parse()?;
         input.parse::<Token![:]>()?;
         let ty = input.parse()?;
         let default = if input.peek(Token![=]) {
             input.parse::<Token![=]>()?;
+            if default.is_some() {
+                return Err(input.error("use either `#[default(...)]` or `= value`, not both"));
+            }
             Some(input.parse()?)
         } else {
-            None
+            default
         };
 
         Ok(Self {
